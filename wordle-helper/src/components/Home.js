@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Home = () => {
     const [currentGuess, setCurrentGuess] = useState('');
@@ -27,6 +27,9 @@ const Home = () => {
     const Item = (props) => {
         return <li>{props.value}</li>;
     }
+
+    useEffect(() => {
+    }, [])
 
     return (
         <form 
