@@ -166,71 +166,79 @@ const Home = () => {
         }, []);
 
         return (
-            <form
-                id="main-form"
-                onSubmit={e => e.preventDefault()}
-            >
-                <label>
-                    Add Guess:
+            <div>
+                <p><b>Instructions:</b> After making a guess on wordle, type in your guess below.
+                    <br></br>
+                    Then for each letter in your guess, enter in the color in the boxes below your guess
+                    <br></br>
+                    (black = 0, yellow = 1, green = 2). Click submit to see the remaining wordle words! 
+                    </p>
+                <form
+                    id="main-form"
+                    onSubmit={e => e.preventDefault()}
+                >
+                    <label>
+                        Add Guess:
+                        <input
+                            type="text"
+                            name="name"
+                            maxLength={5}
+                            value={currentGuess}
+                            onChange={handleGuessChange}
+                        />
+                    </label>
+                    {/* <input type="submit" value="Submit" /> */}
+                    <button onClick={(e) => handleSubmit(e)}>submit guess</button>
+                    <br />
+                    Letter Color:
                     <input
-                        type="text"
-                        name="name"
-                        maxLength={5}
-                        value={currentGuess}
-                        onChange={handleGuessChange}
+                        style={{ maxWidth: 25 }}
+                        type="number"
+                        maxLength={1}
+                        value={v0}
+                        onChange={(event) => setV0(parseInt(event.target.value))}
                     />
-                </label>
-                {/* <input type="submit" value="Submit" /> */}
-                <button onClick={(e) => handleSubmit(e)}>submit guess</button>
-                <br />
-                Letter Color:
-                <input
-                    style={{ maxWidth: 25 }}
-                    type="number"
-                    maxLength={1}
-                    value={v0}
-                    onChange={(event) => setV0(parseInt(event.target.value))}
-                />
-                <input
-                    style={{ maxWidth: 25 }}
-                    type="number"
-                    maxLength={1}
-                    value={v1}
-                    onChange={(event) => setV1(parseInt(event.target.value))}
-                />
-                <input
-                    style={{ maxWidth: 25 }}
-                    type="number"
-                    maxLength={1}
-                    value={v2}
-                    onChange={(event) => setV2(parseInt(event.target.value))}
-                />
-                <input
-                    style={{ maxWidth: 25 }}
-                    type="number"
-                    maxLength={1}
-                    value={v3}
-                    onChange={(event) => setV3(parseInt(event.target.value))}
-                />
-                <input
-                    style={{ maxWidth: 25 }}
-                    type="number"
-                    maxLength={1}
-                    value={v4}
-                    onChange={(event) => setV4(parseInt(event.target.value))}
-                />
-                <br />
-                Letter Color Inputs: {[v0, v1, v2, v3, v4]}
-                <br />
-                Current Guess: {currentGuess}
-                <br />
-                Submitted Guess: {submittedGuess}
-                <br />
-                <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
-            <ul>
-                {displayWordList}
-            </ul>
-            </form>
+                    <input
+                        style={{ maxWidth: 25 }}
+                        type="number"
+                        maxLength={1}
+                        value={v1}
+                        onChange={(event) => setV1(parseInt(event.target.value))}
+                    />
+                    <input
+                        style={{ maxWidth: 25 }}
+                        type="number"
+                        maxLength={1}
+                        value={v2}
+                        onChange={(event) => setV2(parseInt(event.target.value))}
+                    />
+                    <input
+                        style={{ maxWidth: 25 }}
+                        type="number"
+                        maxLength={1}
+                        value={v3}
+                        onChange={(event) => setV3(parseInt(event.target.value))}
+                    />
+                    <input
+                        style={{ maxWidth: 25 }}
+                        type="number"
+                        maxLength={1}
+                        value={v4}
+                        onChange={(event) => setV4(parseInt(event.target.value))}
+                    />
+                    <br />
+                    Letter Color Inputs: {[v0, v1, v2, v3, v4]}
+                    <br />
+                    Current Guess: {currentGuess}
+                    <br />
+                    Submitted Guess: {submittedGuess}
+                    <br />
+                    <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
+                <ul>
+                    {displayWordList}
+                </ul>
+                </form>
+            </div>
         )
 
     }
