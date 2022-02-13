@@ -1,5 +1,6 @@
 import './App.css';
 import Home from './components/Home';
+import DebugLogic from './components/debugLogic';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
           <code>Wordle-helper</code>
         </p>
         <Home />
+        {/* <DebugLogic /> */}
       </header>
     </div>
   );
