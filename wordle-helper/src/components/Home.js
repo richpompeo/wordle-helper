@@ -108,10 +108,7 @@ const Home = () => {
         }
 
         const Item = (props) => {
-            if (props.index < 500) {
-                return <li>{props.value}</li>;
-            }
-            return null;
+            return <li>{props.value}</li>;
         }
 
         // const removeWordsWith = (letter) => {
@@ -144,11 +141,8 @@ const Home = () => {
         // };
 
         useEffect(() => {
-            console.log('allWords', allWords.length);
-            // const foo = 
-            // console.log(foo);
         }, []);
-        console.log('RENDER');
+
         return (
             <form
                 id="main-form"
@@ -260,8 +254,8 @@ const Home = () => {
                 {/* <ul>
                 {guesses.map((guess, index) => <Item value={guess, index} />)}
             </ul> */}
-                <ul>
-                {wordList.map((word, index) => <Item value={word} index={index}/>)}
+            <ul>
+                {wordList.map((word, index) => index < 500 ? <Item value={word} index={index}/> : null)}
             </ul>
             </form>
         )
