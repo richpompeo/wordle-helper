@@ -65,7 +65,7 @@ const Home = () => {
             console.log('word', word);
             console.log('letterColors', letterColors);
             console.log([...word])
-            const wordLetters = [...word];
+            const wordLetters = [...word.toLowerCase()];
             let final = {};
             for (let i = 0; i <= 4; i++) {
                 let letter = wordLetters[i];
