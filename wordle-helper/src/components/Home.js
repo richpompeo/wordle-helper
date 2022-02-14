@@ -233,14 +233,14 @@ const Home = () => {
                         />
                     </label>
                     {/* <input type="submit" value="Submit" /> */}
-                    <button onClick={(e) => handleSubmit(e)}>submit guess</button>
+                    <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
                     <br></br>
                     Letter Colors:
-                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0]}}>{currentGuess[0]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1]}}>{currentGuess[1]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2]}}>{currentGuess[2]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3]}}>{currentGuess[3]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4]}}>{currentGuess[4]}</button>
+                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black'}}>{currentGuess[0]}</button>
+                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black'}}>{currentGuess[1]}</button>
+                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black'}}>{currentGuess[2]}</button>
+                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black'}}>{currentGuess[3]}</button>
+                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black'}}>{currentGuess[4]}</button>
                     <br />
                     Letter Color Inputs: {[b0, b1, b2, b3, b4]}
                     <br />
