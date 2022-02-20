@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { allWords } from '../utils/wordBank';
+import './Home.css';
+import LetterColorButton from '../components/LetterColorButton';
 
 const Home = () => {
     const [currentGuess, setCurrentGuess] = useState('');
@@ -71,20 +73,20 @@ const Home = () => {
             let color = data[key][0].color
             let index = data[key][0].index
 
-            if(data[key].length > 1) {
+            if (data[key].length > 1) {
                 for (let i = 0; i < data[key].length; i++) {
                     if (data[key][i].color > color) {
                         color = data[key][i].color
                         index = data[key][i].index
                     }
-                    
+
                 }
             }
 
 
             switch (color) {
                 case 0:
-                wordListFiltered = removeWordsWith(wordListFiltered, key);
+                    wordListFiltered = removeWordsWith(wordListFiltered, key);
                     break;
                 case 1:
                     wordListFiltered = retainWordsWithLetterButNotAt(wordListFiltered, key, index)
@@ -95,173 +97,185 @@ const Home = () => {
 
                 default:
                     break;
-                }
+            }
 
         }
         setWordList(wordListFiltered)
-            return wordListFiltered;
-        }
+        return wordListFiltered;
+    }
 
-        const packageData = (word, letterColors) => {
-            console.log('word', word);
-            console.log('letterColors', letterColors);
-            console.log([...word])
-            const wordLetters = [...word.toLowerCase()];
-            let final = {};
-            for (let i = 0; i <= 4; i++) {
-                let letter = wordLetters[i];
-                let color = letterColors[i];
-                console.log('letter', letter)
-                console.log({ 'color': color, 'index': i })
-                if (final.hasOwnProperty(letter)) {
-                    final[letter] = [...final[letter], { 'color': color, 'index': i }]
-                } else {
-                    final[letter] = [{ 'color': color, 'index': i }]
-                }
+    const packageData = (word, letterColors) => {
+        console.log('word', word);
+        console.log('letterColors', letterColors);
+        console.log([...word])
+        const wordLetters = [...word.toLowerCase()];
+        let final = {};
+        for (let i = 0; i <= 4; i++) {
+            let letter = wordLetters[i];
+            let color = letterColors[i];
+            console.log('letter', letter)
+            console.log({ 'color': color, 'index': i })
+            if (final.hasOwnProperty(letter)) {
+                final[letter] = [...final[letter], { 'color': color, 'index': i }]
+            } else {
+                final[letter] = [{ 'color': color, 'index': i }]
             }
-            console.log('final', final)
-
-
-
-            return final;
         }
+        console.log('final', final)
 
 
-        const handleSubmit = (event) => {
-            let wordListSynchronous = []
-            console.log('handleSubmit', event);
-            event.preventDefault();
-            setSubmittedGuess(currentGuess);
-            setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
-            wordListSynchronous = bigBrainFunction(currentGuess, [b0, b1, b2, b3, b4]);
-            setDisplayWordList(wordListSynchronous.map((word, index) => <Item value={word} key={index}/>));
-            setPreviousDisplayWordLists([...previousDisplayWordLists,wordListSynchronous]) // <-- for future "undo" button
-            
-            resetButtonsAndGuess();
-            // if (currentGuess !== '') {
-            //     setGuesses([...guesses, currentGuess])
-            // }
-        }
 
-        const handleClearForm = () => {
-            document.getElementById("main-form").reset();
-            setCurrentGuess('')
-            setGuesses([])
-        }
-
-        const handleGuessChange = (event) => {
-            event.preventDefault();
-            setCurrentGuess(event.target.value);
-        }
-
-        const Item = (props) => {
-            return <li>{props.value}</li>;
-        }
-
-        const removeWordsWith = (list, letter) => {
-            /**
-             * Remove words from list that have letter.  This function is 
-             * intended to handle plain "black" letters (as opposed to a 
-             * word a letter that has both a "black" and "yellow" letter,
-             * or "black" and "green", etc...)
-             * 
-             * @param  {Object} list   List of remaining game words
-             * @param  {String} letter All words containing this character should be removed
-             * @return {Object}        List of remaining game words without letter
-             */
+        return final;
+    }
 
 
-            return list.filter((word) => !word.includes(letter));
-        };
+    const handleSubmit = (event) => {
+        let wordListSynchronous = []
+        console.log('handleSubmit', event);
+        event.preventDefault();
+        setSubmittedGuess(currentGuess);
+        setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
+        wordListSynchronous = bigBrainFunction(currentGuess, [b0, b1, b2, b3, b4]);
+        setDisplayWordList(wordListSynchronous.map((word, index) => <Item value={word} key={index} />));
+        setPreviousDisplayWordLists([...previousDisplayWordLists, wordListSynchronous]) // <-- for future "undo" button
 
-        const retainWordsWithLetterButNotAt = (list, letter, index) => {
-            /**
-             * Keep words in list that have letter, but remove words that
-             * have letter at index. This function is intended to handle 
-             * plain "yellow" letters (as opposed to a word a that has 
-             * duplicate letters, one of which is "yellow").
-             * 
-             * @param  {Object} list   List of remaining game words
-             * @param  {String} letter All words containing this character at index should be removed
-             * @param  {Number} Index  All words containing character at index should be removed
-             * @return {Object}        List of remaining game words containg letter, but without letter at index
-             */
+        resetButtonsAndGuess();
+        // if (currentGuess !== '') {
+        //     setGuesses([...guesses, currentGuess])
+        // }
+    }
 
-            list = list.filter((word) => word.includes(letter));
-            list = list.filter((word) => word[index] !== letter);
-            return list
-        };
+    const handleClearForm = () => {
+        document.getElementById("main-form").reset();
+        setCurrentGuess('')
+        setGuesses([])
+    }
 
-        const retainWordsWithLetterAt = (list, letter, index) => {
-            /**
-             * Keep words in list that have letter at index. This function
-             * is intended to handle plain "green" letters (as opposed to
-             * a word a that has duplicate letters, one of which is "green").
-             * 
-             * @param  {Object} list   List of remaining game words
-             * @param  {String} letter All words containing this character at index should be kept
-             * @param  {Number} Index  All words containing character at index should be kept
-             * @return {Object}        List of remaining game words containg letter at index
-             */
-            return list.filter((word) =>  word[index] === (letter));
-        };
+    const handleGuessChange = (event) => {
+        event.preventDefault();
+        setCurrentGuess(event.target.value);
+    }
 
-        useEffect(() => {
-        }, []);
+    const Item = (props) => {
+        return <li>{props.value}</li>;
+    }
 
-        return (
-            <div>
-                <p><b>Instructions:</b> After making a guess on wordle, type in your guess below.
+    const removeWordsWith = (list, letter) => {
+        /**
+         * Remove words from list that have letter.  This function is 
+         * intended to handle plain "black" letters (as opposed to a 
+         * word a letter that has both a "black" and "yellow" letter,
+         * or "black" and "green", etc...)
+         * 
+         * @param  {Object} list   List of remaining game words
+         * @param  {String} letter All words containing this character should be removed
+         * @return {Object}        List of remaining game words without letter
+         */
+
+
+        return list.filter((word) => !word.includes(letter));
+    };
+
+    const retainWordsWithLetterButNotAt = (list, letter, index) => {
+        /**
+         * Keep words in list that have letter, but remove words that
+         * have letter at index. This function is intended to handle 
+         * plain "yellow" letters (as opposed to a word a that has 
+         * duplicate letters, one of which is "yellow").
+         * 
+         * @param  {Object} list   List of remaining game words
+         * @param  {String} letter All words containing this character at index should be removed
+         * @param  {Number} Index  All words containing character at index should be removed
+         * @return {Object}        List of remaining game words containg letter, but without letter at index
+         */
+
+        list = list.filter((word) => word.includes(letter));
+        list = list.filter((word) => word[index] !== letter);
+        return list
+    };
+
+    const retainWordsWithLetterAt = (list, letter, index) => {
+        /**
+         * Keep words in list that have letter at index. This function
+         * is intended to handle plain "green" letters (as opposed to
+         * a word a that has duplicate letters, one of which is "green").
+         * 
+         * @param  {Object} list   List of remaining game words
+         * @param  {String} letter All words containing this character at index should be kept
+         * @param  {Number} Index  All words containing character at index should be kept
+         * @return {Object}        List of remaining game words containg letter at index
+         */
+        return list.filter((word) => word[index] === (letter));
+    };
+
+    useEffect(() => {
+    }, []);
+
+    return (
+        <div className='mainContent'>
+            <div className='slide'>
+                <p><b>Instructions:</b></p>
+                <p>
+                 After making a guess on wordle, type in your guess below.
                     <br></br>
-                    Then for each letter in your guess, tap the button below so that the colors 
+                    Then for each letter in your guess, tap the button below so that the colors
                     <br></br>
-                    match what wordle shows. Click submit to see the remaining wordle words! 
+                    match what wordle shows. Click submit to see the remaining wordle words!
                 </p>
+            </div>
 
-                <form
-                    id="main-form"
-                    onSubmit={e => e.preventDefault()}
-                >
-                    <label>
-                        Add Guess:
-                        <input
-                            type="text"
-                            name="name"
-                            maxLength={5}
-                            value={currentGuess}
-                            onChange={handleGuessChange}
-                        />
+            <form
+                id="main-form"
+                onSubmit={e => e.preventDefault()}
+            >
+                <div className='slide'>
+                    <label htmlFor='guessInput' className='guessInputLabel'>
+                        Add Guess
                     </label>
+                    <input
+                        id='guessInput'
+                        className='guessInput'
+                        type="text"
+                        name="name"
+                        maxLength={5}
+                        value={currentGuess?.toUpperCase()}
+                        onChange={handleGuessChange}
+                    />
                     {/* <input type="submit" value="Submit" /> */}
-                    <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
-                    <br></br>
+                    <button onClick={(e) => handleSubmit(e)} className={'submitButton'}>submit guess</button>
+                </div>
+                <div className='slide'>
                     Letter Colors:
-                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black'}}>{currentGuess[0]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black'}}>{currentGuess[1]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black'}}>{currentGuess[2]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black'}}>{currentGuess[3]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black'}}>{currentGuess[4]}</button>
-                    <br />
-                    Letter Color Inputs: {[b0, b1, b2, b3, b4]}
-                    <br />
+                    <LetterColorButton onClick={updateLetterColorButtonB0} letter={currentGuess[0]} colorValue={b0} />
+                    <LetterColorButton onClick={updateLetterColorButtonB1} letter={currentGuess[1]} colorValue={b1} />
+                    <LetterColorButton onClick={updateLetterColorButtonB2} letter={currentGuess[2]} colorValue={b2} />
+                    <LetterColorButton onClick={updateLetterColorButtonB3} letter={currentGuess[3]} colorValue={b3} />
+                    <LetterColorButton onClick={updateLetterColorButtonB4} letter={currentGuess[4]} colorValue={b4} />
+                </div>
+                <div className='slide'>
                     Current Guess: {currentGuess}
                     <br />
                     Submitted Guess: {submittedGuess}
                     <br />
                     Previous Guesses:
                     <ul>
-                        {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
+                        {previousGuesses.map((word, index) => <Item value={word[0]} key={index} />)}
                     </ul>
+                </div>
+                <div className='slide'>
                     <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
-                    <p>Words Left:</p>
+                </div>
+                <div className='slide'>
+                <p>Words Left:</p>
                     <ul>
                         {displayWordList}
                     </ul>
-                </form>
-            </div>
-        )
+                </div>
+            </form>
+        </div>
+    )
 
-    }
+}
 
 
-    export default Home;
+export default Home;

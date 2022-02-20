@@ -6,12 +6,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          <code>Wordle-helper</code>
-        </p>
-        <Home />
-        {/* <DebugLogic /> */}
+        <code>Wordle-helper</code>
       </header>
+      <div className="container">
+        <div className="column">
+        </div>
+        <Home />
+        <div className="column">
+        </div>
+      </div>
     </div>
   );
 }
