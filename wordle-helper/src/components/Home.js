@@ -102,6 +102,75 @@ const Home = () => {
             return wordListFiltered;
         }
 
+        const bigBrainFunction2 = (word, letterColors) => {
+            let data = packageData(word, letterColors);
+            let wordListFiltered = [...wordList];
+            console.log('data', data)
+            console.log(Object.keys(data))
+            // 0 = black
+            // 1 = yellow
+            // 2 = green
+
+            for (let key in data) {
+                let color = null
+                let index = null
+                if (data[key].length === 1) { // only 1 letter
+                    color = data[key][0].color
+                    index = data[key][0].index
+
+                    switch (color) {
+                        case 0:
+                        wordListFiltered = removeWordsWith(wordListFiltered, key);
+                            break;
+                        case 1:
+                            wordListFiltered = retainWordsWithLetterButNotAt(wordListFiltered, key, index)
+                            break;
+                        case 2:
+                            wordListFiltered = retainWordsWithLetterAt(wordListFiltered, key, index)
+                            break;
+        
+                        default:
+                            break;
+                    }
+                }
+                else { // more than 1 letter
+                    // go through each letter and color, performing different operations than single letter
+                    // also count the number of "non black letters" in the current guess, then after the
+                    // for loop, only keep words in the wordListFiltered that have exactly this count of 
+                    // "non black letters"
+                    let nonBlackLetterCount = 0
+                    for (let i = 0; i < data[key].length; i++) {
+                        color = data[key][i].color
+                        index = data[key][i].index
+                        if (color > 0) {
+                            nonBlackLetterCount += 1
+                        }
+                        switch (color) {
+                            case 0:
+                            wordListFiltered = removeWordsWithLetterAt(wordListFiltered, key, index);
+                                break;
+                            case 1:
+                                wordListFiltered = retainWordsWithLetterButNotAt(wordListFiltered, key, index)
+                                break;
+                            case 2:
+                                wordListFiltered = retainWordsWithLetterAt(wordListFiltered, key, index)
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    // keep words that have exactly nonBlackLetterCount of letter
+                    wordListFiltered = keepWordsWithExactLetterCount(wordListFiltered, key, nonBlackLetterCount)
+                }
+                
+    
+
+            }
+            setWordList(wordListFiltered)
+                return wordListFiltered;
+            }
+
         const packageData = (word, letterColors) => {
             console.log('word', word);
             console.log('letterColors', letterColors);
@@ -128,19 +197,33 @@ const Home = () => {
 
 
         const handleSubmit = (event) => {
-            let wordListSynchronous = []
-            console.log('handleSubmit', event);
-            event.preventDefault();
-            setSubmittedGuess(currentGuess);
-            setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
-            wordListSynchronous = bigBrainFunction(currentGuess, [b0, b1, b2, b3, b4]);
-            setDisplayWordList(wordListSynchronous.map((word, index) => <Item value={word} key={index}/>));
-            setPreviousDisplayWordLists([...previousDisplayWordLists,wordListSynchronous]) // <-- for future "undo" button
+            if(handleInputValidation(currentGuess) === true) {
+                console.log('handleSubmit', event);
+                let wordListSynchronous = []
+                setSubmittedGuess(currentGuess);
+                setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
+                event.preventDefault();
+                wordListSynchronous = bigBrainFunction2(currentGuess, [b0, b1, b2, b3, b4]);
+                setDisplayWordList(wordListSynchronous.map((word, index) => <Item value={word} key={index}/>));
+                setPreviousDisplayWordLists([...previousDisplayWordLists,wordListSynchronous]) // <-- for future "undo" button
+                resetButtonsAndGuess();
+            }
             
-            resetButtonsAndGuess();
-            // if (currentGuess !== '') {
-            //     setGuesses([...guesses, currentGuess])
-            // }
+
+        }
+
+        const handleInputValidation = (word) => {
+            // the reason this is not returning false for each of the if statements then true at the end is to try to speed up
+            // checking if the word is in the wordList b/c if it is, it should be faster than going through 12,000 words.
+            if (word.length !== 5) {
+                return false
+            }
+
+            if (wordList.includes(word)) {
+                return true
+            }
+
+            return false
         }
 
         const handleClearForm = () => {
@@ -203,7 +286,43 @@ const Home = () => {
              * @param  {Number} Index  All words containing character at index should be kept
              * @return {Object}        List of remaining game words containg letter at index
              */
-            return list.filter((word) =>  word[index] === (letter));
+            return list.filter((word) =>  word[index] === letter);
+        };
+
+        const removeWordsWithLetterAt = (list, letter, index)=> {
+            /**
+             * Remove words from list that have letter at index.  This function is intended to
+             * handle "black" letters in a word that has more than one of these letters
+             * 
+             * @param  {Object} list   List of remaining game words
+             * @param  {String} letter All words containing this character at index should be removed
+             * @param  {Number} Index  All words containing this character at index should be removed
+             * @return {Object}        List of remaining game words without letter at index
+             */
+
+
+            return list.filter((word) =>  word[index] !== letter);
+        };
+
+
+
+        // the following two functions can be noticably slow when a first guess of 'sissy' happens b/c there is a lot of
+        // computations going on.  I think it should be rare that a person's first guess has multiple letters, but maybe
+        // we could change this code to run faster for those scenarios.
+        const countLettersInWord = (word, letter)=> {
+            let letterCount = 0
+            for (let i = 0; i <= 4; i++) {
+                if (word[i] === letter) {
+                    letterCount += 1
+                }
+            }
+            return letterCount;
+        };
+
+        const keepWordsWithExactLetterCount = (list, letter, letterCount)=> {
+            console.log('letter, letterCount', letter, letterCount)
+
+            return list.filter((word) =>  countLettersInWord(word, letter) === letterCount);
         };
 
         useEffect(() => {
