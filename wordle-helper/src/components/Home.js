@@ -204,13 +204,54 @@ const Home = () => {
                 setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
                 event.preventDefault();
                 wordListSynchronous = bigBrainFunction2(currentGuess, [b0, b1, b2, b3, b4]);
-                setDisplayWordList(wordListSynchronous.map((word, index) => <Item value={word} key={index}/>));
+                setDisplayWordList(makeListItems(wordListSynchronous));
                 setPreviousDisplayWordLists([...previousDisplayWordLists,wordListSynchronous]) // <-- for future "undo" button
                 resetButtonsAndGuess();
             }
             
 
         }
+
+        const handleUndo = (event) => {
+                console.log('handleUndo', event);
+                if (previousGuesses.length > 0) {
+                    previousGuesses.pop()
+                    previousDisplayWordLists.pop()
+                    // console.log(previousGuesses)
+                    // console.log(previousDisplayWordLists)
+                    setPreviousGuesses(previousGuesses)
+                    setPreviousDisplayWordLists(previousDisplayWordLists)
+                    if (previousDisplayWordLists.length === 0) {
+                        setWordList(allWords)
+                        setDisplayWordList([])
+                    } else {
+                        setWordList(previousDisplayWordLists[previousDisplayWordLists.length-1])
+                        setDisplayWordList(makeListItems(previousDisplayWordLists[previousDisplayWordLists.length-1]))
+                    }
+                }
+                
+        }
+
+        const handleReset = (event) => {
+            console.log('handleReset', event);
+            if (previousGuesses.length > 0) {
+                setPreviousGuesses([])
+                setPreviousDisplayWordLists([])
+                setWordList(allWords)
+                setDisplayWordList([])
+                resetButtonsAndGuess();
+            }
+                
+        }
+            
+
+
+        
+
+        const makeListItems = (list) => {
+           return list.map((word, index) => <Item value={word} key={index}/>)
+        }
+
 
         const handleInputValidation = (word) => {
             // the reason this is not returning false for each of the if statements then true at the end is to try to speed up
@@ -219,7 +260,7 @@ const Home = () => {
                 return false
             }
 
-            if (wordList.includes(word)) {
+            if (allWords.includes(word.toLowerCase())) {
                 return true
             }
 
@@ -353,6 +394,8 @@ const Home = () => {
                     </label>
                     {/* <input type="submit" value="Submit" /> */}
                     <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
+                    <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
+                    <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
                     <br></br>
                     Letter Colors:
                     <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black'}}>{currentGuess[0]}</button>
