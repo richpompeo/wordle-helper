@@ -139,12 +139,13 @@ const Home = () => {
                     // for loop, only keep words in the wordListFiltered that have exactly this count of 
                     // "non black letters"
                     let nonBlackLetterCount = 0
+                    let blackLetterCount = 0
                     for (let i = 0; i < data[key].length; i++) {
                         color = data[key][i].color
                         index = data[key][i].index
-                        if (color > 0) {
-                            nonBlackLetterCount += 1
-                        }
+                        if (color === 0) { blackLetterCount += 1 } 
+                        else { nonBlackLetterCount += 1}
+
                         switch (color) {
                             case 0:
                             wordListFiltered = removeWordsWithLetterAt(wordListFiltered, key, index);
@@ -160,8 +161,12 @@ const Home = () => {
                         }
                     }
 
-                    // keep words that have exactly nonBlackLetterCount of letter
-                    wordListFiltered = keepWordsWithExactLetterCount(wordListFiltered, key, nonBlackLetterCount)
+                    // if (blackLetterCount === 0) {
+                    //     wordListFiltered = keepWordsWithAtLeastLetterCount(wordListFiltered, key, nonBlackLetterCount)
+                    // } else {
+                        // keep words that have exactly nonBlackLetterCount of letter
+                        wordListFiltered = keepWordsWithExactLetterCount(wordListFiltered, key, nonBlackLetterCount)
+                    // }
                 }
                 
     
@@ -364,6 +369,12 @@ const Home = () => {
             console.log('letter, letterCount', letter, letterCount)
 
             return list.filter((word) =>  countLettersInWord(word, letter) === letterCount);
+        };
+
+        const keepWordsWithAtLeastLetterCount = (list, letter, letterCount)=> {
+            console.log('letter, letterCount', letter, letterCount)
+
+            return list.filter((word) =>  countLettersInWord(word, letter) >= letterCount);
         };
 
         useEffect(() => {

@@ -1,3 +1,12 @@
 # wordle-helper
 
 Check out our project here: https://richpompeo.github.io/wordle-helper
+
+
+## commands:
+
+#### To run project locally:
+`npm start`
+
+#### To deploy local branch to github pages:
+`npm run deploy`
