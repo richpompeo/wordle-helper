@@ -1,0 +1,33 @@
+.mainContent {
+    min-width: 70vh;
+    min-height: 100vh;
+    background-color: #282c34;
+}
+
+.slide {
+    margin: 10px;
+    min-height: 10vh;
+    background-color: #282c34;
+    color: white;
+    border: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    border: 1px white solid;
+}
+
+.guessInputLabel {
+    font-size: 24px;
+}
+
+.guessInput {
+    min-height: 5vh;
+    font-size: 24px;
+    width: 10vh;
+}
+
+.submitButton {
+   min-width: 15vh;
+   min-height: 5vh;
+}
