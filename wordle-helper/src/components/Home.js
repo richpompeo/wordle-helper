@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { allWords } from '../utils/wordBank';
+import {updateCurrentPageCount} from './AwsFunctions';
+
 
 const Home = () => {
     const [currentGuess, setCurrentGuess] = useState('');
@@ -415,11 +417,11 @@ const Home = () => {
              * this function will update the page load count in our database if the visited_today cookie is not set, 
              * otherwise it will not do anything
              */
-            
+            // console.log(getCookieValue('visited_today'));
             if (getCookieValue('visited_today') === '') { // page not visited yet today, update DB
-                fetch('http://surfcheckmass.com/updateWordleHelper.php') // just call page to update DB
+                updateCurrentPageCount();
                 // console.log('update DB')
-                setVisitedTodayCookie()
+                setVisitedTodayCookie();
                 return
             } else { // page visited already today, do not update DB'
                 // console.log('do not update DB')
