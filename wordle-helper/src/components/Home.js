@@ -202,6 +202,7 @@ const Home = () => {
 
 
         const handleSubmit = (event) => {
+            tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             if(handleInputValidation(currentGuess) === true) {
                 console.log('handleSubmit', event);
                 let wordListSynchronous = []
@@ -218,26 +219,28 @@ const Home = () => {
         }
 
         const handleUndo = (event) => {
-                console.log('handleUndo', event);
-                if (previousGuesses.length > 0) {
-                    previousGuesses.pop()
-                    previousDisplayWordLists.pop()
-                    // console.log(previousGuesses)
-                    // console.log(previousDisplayWordLists)
-                    setPreviousGuesses(previousGuesses)
-                    setPreviousDisplayWordLists(previousDisplayWordLists)
-                    if (previousDisplayWordLists.length === 0) {
-                        setWordList(allWords)
-                        setDisplayWordList([])
-                    } else {
-                        setWordList(previousDisplayWordLists[previousDisplayWordLists.length-1])
-                        setDisplayWordList(makeListItems(previousDisplayWordLists[previousDisplayWordLists.length-1]))
-                    }
+            tryUpdatingPageLoadCount() // count that user is on page today if not already counted
+            console.log('handleUndo', event);
+            if (previousGuesses.length > 0) {
+                previousGuesses.pop()
+                previousDisplayWordLists.pop()
+                // console.log(previousGuesses)
+                // console.log(previousDisplayWordLists)
+                setPreviousGuesses(previousGuesses)
+                setPreviousDisplayWordLists(previousDisplayWordLists)
+                if (previousDisplayWordLists.length === 0) {
+                    setWordList(allWords)
+                    setDisplayWordList([])
+                } else {
+                    setWordList(previousDisplayWordLists[previousDisplayWordLists.length-1])
+                    setDisplayWordList(makeListItems(previousDisplayWordLists[previousDisplayWordLists.length-1]))
                 }
+            }
                 
         }
 
         const handleReset = (event) => {
+            tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             console.log('handleReset', event);
             if (previousGuesses.length > 0) {
                 setPreviousGuesses([])
@@ -248,10 +251,7 @@ const Home = () => {
             }
                 
         }
-            
-
-
-        
+                    
 
         const makeListItems = (list) => {
            return list.map((word, index) => <Item value={word} key={index}/>)
@@ -377,8 +377,61 @@ const Home = () => {
             return list.filter((word) =>  countLettersInWord(word, letter) >= letterCount);
         };
 
+
+        const setVisitedTodayCookie = () => {
+            /**
+             * sets cookie visited_today to 'True' and expires at midnight tonight utc time.
+             * (same time that new wordle word updates)
+             */
+            let now_utc = new Date(); 
+            let midnight_tonight_utc =  Date.UTC(now_utc.getUTCFullYear(), now_utc.getUTCMonth(), now_utc.getUTCDate(), 24, 0, 0);
+            midnight_tonight_utc = new Date(midnight_tonight_utc).toUTCString()
+            // console.log(midnight_tonight_utc)
+            document.cookie = "visited_today=True; expires="+midnight_tonight_utc+"path=/;";
+        }
+
+        const getCookieValue = (cname) => {
+             /**
+             * returns string of cookie value.  If cookie not present, returns empty string
+             */
+            
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+                }
+                if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        const tryUpdatingPageLoadCount = () => {
+            /**
+             * this function will update the page load count in our database if the visited_today cookie is not set, 
+             * otherwise it will not do anything
+             */
+            
+            if (getCookieValue('visited_today') === '') { // page not visited yet today, update DB
+                fetch('http://surfcheckmass.com/updateWordleHelper.php') // just call page to update DB
+                // console.log('update DB')
+                setVisitedTodayCookie()
+                return
+            } else { // page visited already today, do not update DB'
+                // console.log('do not update DB')
+                return
+            }
+            
+        }
+        
         useEffect(() => {
-        }, []);
+            // console.log(getCookieValue('visited_today'))
+            tryUpdatingPageLoadCount()
+        }, []); // on page load
 
         return (
             <div>
