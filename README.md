@@ -1,6 +1,6 @@
 # wordle-helper
 
-Check out our project here: https://wordlehelpertool.com
+Check out our project here: https://www.wordlehelpertool.com
 
 
 ## commands:
