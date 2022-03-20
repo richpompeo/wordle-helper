@@ -410,27 +410,31 @@ const Home = () => {
             return "";
         }
 
-        const tryUpdatingPageLoadCount = () => {
-            /**
-             * this function will update the page load count in our database if the visited_today cookie is not set, 
-             * otherwise it will not do anything
-             */
-            
-            if (getCookieValue('visited_today') === '') { // page not visited yet today, update DB
-                fetch('http://surfcheckmass.com/updateWordleHelper.php') // just call page to update DB
-                // console.log('update DB')
+    const tryUpdatingPageLoadCount = async () => {
+        /**
+         * this function will update the page load count in our database if the visited_today cookie is not set, 
+         * otherwise it will not do anything
+         */
+
+        if (getCookieValue('visited_today') === '') { // page not visited yet today, update DB
+            try {
+                await fetch('http://surfcheckmass.com/updateWordleHelper.php') // just call page to update DB
                 setVisitedTodayCookie()
-                return
-            } else { // page visited already today, do not update DB'
-                // console.log('do not update DB')
+            } catch (error) {
+                console.error('error updating page visit', error)
+            } finally {
                 return
             }
-            
+        } else { // page visited already today, do not update DB'
+            // console.log('do not update DB')
+            return
         }
+
+    }
         
         useEffect(() => {
-            // console.log(getCookieValue('visited_today'))
             tryUpdatingPageLoadCount()
+            .catch(console.error)
         }, []); // on page load
 
         return (
