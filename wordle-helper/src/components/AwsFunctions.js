@@ -5,30 +5,33 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 });
 
 const docClient = new AWS.DynamoDB.DocumentClient()
-const docClientSet = new AWS.DynamoDB.DocumentClient()
+const docClientUpdate = new AWS.DynamoDB.DocumentClient()
+const docClientGet = new AWS.DynamoDB.DocumentClient()
 
-export const addToCurrentPageCount = (currentPageCount) => {
+export const updateCurrentPageCount = (currentPageCount) => {
     var params = {
         TableName: 'page_load_count',
         Key: {"page_load_count_key": 'page_load_count'},
         UpdateExpression: "set page_load_count = :num",
         ExpressionAttributeValues:{
-            ":num": currentPageCount+1
+            ":num": currentPageCount
         },
         ReturnValues: "UPDATED_NEW"
     }
-    
-    docClientSet.update(params, function (err, data) {
-        if (!err) {
-            // console.log(data)
-        }
-        else {
-            console.log(err)
-        }
-    })
+    return new Promise(function(resolve, reject) {
+        docClientUpdate.update(params, function (err, data) {
+            if (!err) {
+                resolve(data)
+            }
+            else {
+                reject(err)
+            }
+        });
+    });
 }
 
-export const updateCurrentPageCount = () => {
+
+export const getCurrentPageCount = async () => {
     // fetch current page count then update it in same function b/c I do not know how to make the addToCurrentPageCount
     // wait to run until after a "get" function finishes.
 
@@ -37,16 +40,16 @@ export const updateCurrentPageCount = () => {
         KeyConditionExpression: "page_load_count_key = page_load_count",
     }
 
-    docClient.scan(params, function (err, data) {
-        if (!err) {
-            // console.log(data.Items[0]['page_load_count'])
-            let currentPageCount = data.Items[0]['page_load_count']
-            addToCurrentPageCount(currentPageCount)
-        }
-        else {
-            console.log(err)
-        }
-    })
-
+    return new Promise(function(resolve, reject) {
+        docClientGet.scan(params, function (err, data) {
+            if (!err) {
+                let currentPageCount = data.Items[0]['page_load_count']
+                resolve(currentPageCount)
+            }
+            else {
+                reject(err)
+            }
+        });
+    });
+    
 }
-

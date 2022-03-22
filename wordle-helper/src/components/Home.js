@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { allWords } from '../utils/wordBank';
-import {updateCurrentPageCount} from './AwsFunctions';
+import {getCurrentPageCount, updateCurrentPageCount} from './AwsFunctions';
 
 
 const Home = () => {
@@ -11,6 +11,7 @@ const Home = () => {
     const [previousDisplayWordLists, setPreviousDisplayWordLists] = useState([]);
     const [wordList, setWordList] = useState(allWords);
     const [displayWordList, setDisplayWordList] = useState([]);
+    const [currentPageCount, setCurrentPageCount] = useState(1337);
 
     const [valueForRemoveWordsWith, setValueForRemoveWordsWith] = useState('');
     const [valueForRetainWordsWith, setValueForRetainWordsWith] = useState('');
@@ -421,7 +422,9 @@ const Home = () => {
         // console.log(getCookieValue('visited_today'));
         if (getCookieValue('visited_today') === '') { // page not visited yet today, update DB
             try {
-                updateCurrentPageCount();
+                getCurrentPageCount().then(currentPageCount => {
+                    updateCurrentPageCount(currentPageCount+1);
+                 });
                 setVisitedTodayCookie()
             } catch (error) {
                 console.error('error updating page visit', error)
@@ -436,6 +439,9 @@ const Home = () => {
     }
         
         useEffect(() => {
+            getCurrentPageCount().then(currentPageCount => {
+                setCurrentPageCount(currentPageCount);
+             })
             tryUpdatingPageLoadCount()
             .catch(console.error)
         }, []); // on page load
@@ -475,7 +481,7 @@ const Home = () => {
                     <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black'}}>{currentGuess[3]}</button>
                     <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black'}}>{currentGuess[4]}</button>
                     <br />
-                    Letter Color Inputs: {[b0, b1, b2, b3, b4]}
+                    {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
                     <br />
                     Current Guess: {currentGuess}
                     <br />
@@ -490,6 +496,7 @@ const Home = () => {
                     <ul>
                         {displayWordList}
                     </ul>
+                    <p style={{marginTop: '20em'}}>Page Visitor Count: {currentPageCount}</p>
                 </form>
             </div>
         )
