@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { allWords } from '../utils/wordBank';
 import {updateCurrentPageCount} from './AwsFunctions';
+import ReactGA from 'react-ga4';
 
 
 const Home = () => {
@@ -204,6 +205,10 @@ const Home = () => {
 
 
         const handleSubmit = (event) => {
+            ReactGA.event({
+                category: "user action",
+                action: "guess submitted",
+              });
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             if(handleInputValidation(currentGuess) === true) {
                 console.log('handleSubmit', event);
@@ -221,6 +226,10 @@ const Home = () => {
         }
 
         const handleUndo = (event) => {
+            ReactGA.event({
+                category: "user action",
+                action: "undo guess",
+              });
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             console.log('handleUndo', event);
             if (previousGuesses.length > 0) {
@@ -242,6 +251,10 @@ const Home = () => {
         }
 
         const handleReset = (event) => {
+            ReactGA.event({
+                category: "user action",
+                action: "guess reset",
+              });              
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             console.log('handleReset', event);
             if (previousGuesses.length > 0) {
