@@ -461,6 +461,7 @@ const Home = () => {
 
         return (
             <div>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2674335249736771" crossorigin="anonymous"></script>
                 <p><b>Instructions:</b> After making a guess on wordle, type in your guess below.
                     <br></br>
                     Then for each letter in your guess, tap the button below so that the colors 
