@@ -432,8 +432,8 @@ const Home = () => {
          * this function will update the page load count in our database if the visited_today cookie is not set, 
          * otherwise it will not do anything
          */
-        // console.log(getCookieValue('visited_today'));
-        if (getCookieValue('visited_today') === '') { // page not visited yet today, update DB
+        let current_url = window.location.href
+        if (getCookieValue('visited_today') === '' && current_url.indexOf('wordlehelpertool') !== -1) { // page not visited yet today and on wordlehelpertool.com, update DB
             try {
                 getCurrentPageCount().then(currentPageCount => {
                     updateCurrentPageCount(currentPageCount+1);
@@ -498,11 +498,11 @@ const Home = () => {
                     </div>
                     <br />
                     {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
-                    <br />
+                    {/* <br />
                     Current Guess: {currentGuess}
                     <br />
                     Submitted Guess: {submittedGuess}
-                    <br />
+                    <br /> */}
                     Previous Guesses:
                     <ul>
                         {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
