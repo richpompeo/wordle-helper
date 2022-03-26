@@ -303,7 +303,7 @@ const Home = () => {
             return <li style={{ listStyleType: 'none' }}>{props.value?.toUpperCase()}</li>;
         }
 
-        
+
         const removeWordsWith = (list, letter) => {
             /**
              * Remove words from list that have letter.  This function is 
@@ -385,11 +385,13 @@ const Home = () => {
             return letterCount;
         };
 
+        
         const keepWordsWithExactLetterCount = (list, letter, letterCount)=> {
             console.log('letter, letterCount', letter, letterCount)
 
             return list.filter((word) =>  countLettersInWord(word, letter) === letterCount);
         };
+
 
         const keepWordsWithAtLeastLetterCount = (list, letter, letterCount)=> {
             console.log('letter, letterCount', letter, letterCount)
