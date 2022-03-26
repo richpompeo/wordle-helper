@@ -303,6 +303,7 @@ const Home = () => {
             return <li style={{ listStyleType: 'none' }}>{props.value?.toUpperCase()}</li>;
         }
 
+
         const removeWordsWith = (list, letter) => {
             /**
              * Remove words from list that have letter.  This function is 
@@ -318,6 +319,7 @@ const Home = () => {
 
             return list.filter((word) => !word.includes(letter));
         };
+
 
         const retainWordsWithLetterButNotAt = (list, letter, index) => {
             /**
@@ -337,6 +339,7 @@ const Home = () => {
             return list
         };
 
+
         const retainWordsWithLetterAt = (list, letter, index) => {
             /**
              * Keep words in list that have letter at index. This function
@@ -350,6 +353,7 @@ const Home = () => {
              */
             return list.filter((word) =>  word[index] === letter);
         };
+
 
         const removeWordsWithLetterAt = (list, letter, index)=> {
             /**
@@ -381,11 +385,13 @@ const Home = () => {
             return letterCount;
         };
 
+        
         const keepWordsWithExactLetterCount = (list, letter, letterCount)=> {
             console.log('letter, letterCount', letter, letterCount)
 
             return list.filter((word) =>  countLettersInWord(word, letter) === letterCount);
         };
+
 
         const keepWordsWithAtLeastLetterCount = (list, letter, letterCount)=> {
             console.log('letter, letterCount', letter, letterCount)
@@ -461,64 +467,58 @@ const Home = () => {
         }, []); // on page load
 
         return (
-            <div style={{width: "80%"}}>
+            <div>
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2674335249736771" crossOrigin="anonymous"></script>
                 <p><b>Instructions:</b> After making a guess on wordle, type in your guess below.
                     Then for each letter in your guess, tap the button below so that the colors 
                     match what wordle shows. Click submit to see the remaining wordle words! 
                 </p>
-                <div style={{display: 'grid', gridTemplateColumns: '1fr 7fr', gridGap: '10%'}}> 
-                    <div>
-                        Previous Guesses:
-                        <ul style={{istStyle: 'none', paddingLeft: 0}}>
-                            {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
-                        </ul>
+
+                <form
+                    id="main-form"
+                    onSubmit={e => e.preventDefault()}
+                >
+                    <label>
+                        Add Guess:
+                        <input
+                            type="text"
+                            name="name"
+                            maxLength={5}
+                            value={currentGuess?.toUpperCase()}
+                            onChange={handleGuessChange}
+                        />
+                    </label>
+                    {/* <input type="submit" value="Submit" /> */}
+                    <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
+                    <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
+                    <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
+                    <br></br>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', margin: '0.1em' }}>
+                    Letter Colors:
+                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black', height: 30, width: 30 }}>{currentGuess[0]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black', height: 30, width: 30 }}>{currentGuess[1]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black', height: 30, width: 30 }}>{currentGuess[2]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black', height: 30, width: 30 }}>{currentGuess[3]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black', height: 30, width: 30 }}>{currentGuess[4]?.toUpperCase()}</button>
                     </div>
-                    <form
-                        id="main-form"
-                        onSubmit={e => e.preventDefault()}
-                    >
-                        <label>
-                            Guess:
-                            <input
-                                type="text"
-                                name="name"
-                                maxLength={5}
-                                value={currentGuess?.toUpperCase()}
-                                onChange={handleGuessChange}
-                            />
-                        </label>
-                        {/* <input type="submit" value="Submit" /> */}
-                        <br></br>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', margin: '0.1em' }}>
-                        Colors:
-                        <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black', height: 30, width: 30 }}>{currentGuess[0]?.toUpperCase()}</button>
-                        <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black', height: 30, width: 30 }}>{currentGuess[1]?.toUpperCase()}</button>
-                        <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black', height: 30, width: 30 }}>{currentGuess[2]?.toUpperCase()}</button>
-                        <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black', height: 30, width: 30 }}>{currentGuess[3]?.toUpperCase()}</button>
-                        <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black', height: 30, width: 30 }}>{currentGuess[4]?.toUpperCase()}</button>
-                        </div>
-                        <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
-                        <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
-                        <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
-                        <br />
-                        {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
-                        {/* <br />
-                        Current Guess: {currentGuess}
-                        <br />
-                        Submitted Guess: {submittedGuess}
-                        <br /> */}
-                        
-                        <p>Number of 5 Letter Words Left:</p>
-                        <p><b>{wordList.length}</b></p>
-                        <p>Words Left:</p>
-                        <ul style={{istStyle: 'none', paddingLeft: 0}}>
-                            {displayWordList}
-                        </ul>
-                        
-                    </form>
-                </div>
-                <PageVisitCounter currentPageCount={currentPageCount} />
+                    <br />
+                    {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
+                    {/* <br />
+                    Current Guess: {currentGuess}
+                    <br />
+                    Submitted Guess: {submittedGuess} */}
+                    <br />
+                    Previous Guesses:
+                    <ul>
+                        {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
+                    </ul>
+                    <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
+                    <p>Words Left:</p>
+                    <ul>
+                        {displayWordList}
+                    </ul>
+                    <PageVisitCounter currentPageCount={currentPageCount} />
+                </form>
             </div>
         )
 
