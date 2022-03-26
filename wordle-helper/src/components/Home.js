@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { allWords } from '../utils/wordBank';
 import {getCurrentPageCount, updateCurrentPageCount} from './AwsFunctions';
+import PageVisitCounter from './PageVisitCounter';
 import ReactGA from 'react-ga4';
-
 
 const Home = () => {
     const [currentGuess, setCurrentGuess] = useState('');
@@ -12,7 +12,7 @@ const Home = () => {
     const [previousDisplayWordLists, setPreviousDisplayWordLists] = useState([]);
     const [wordList, setWordList] = useState(allWords);
     const [displayWordList, setDisplayWordList] = useState([]);
-    const [currentPageCount, setCurrentPageCount] = useState(1337);
+    const [currentPageCount, setCurrentPageCount] = useState(null);
 
     const [valueForRemoveWordsWith, setValueForRemoveWordsWith] = useState('');
     const [valueForRetainWordsWith, setValueForRetainWordsWith] = useState('');
@@ -300,7 +300,7 @@ const Home = () => {
         }
 
         const Item = (props) => {
-            return <li>{props.value}</li>;
+            return <li style={{ listStyleType: 'none' }}>{props.value?.toUpperCase()}</li>;
         }
 
         const removeWordsWith = (list, letter) => {
@@ -461,7 +461,7 @@ const Home = () => {
 
         return (
             <div>
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2674335249736771" crossorigin="anonymous"></script>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2674335249736771" crossOrigin="anonymous"></script>
                 <p><b>Instructions:</b> After making a guess on wordle, type in your guess below.
                     <br></br>
                     Then for each letter in your guess, tap the button below so that the colors 
@@ -479,7 +479,7 @@ const Home = () => {
                             type="text"
                             name="name"
                             maxLength={5}
-                            value={currentGuess}
+                            value={currentGuess?.toUpperCase()}
                             onChange={handleGuessChange}
                         />
                     </label>
@@ -488,12 +488,14 @@ const Home = () => {
                     <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
                     <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
                     <br></br>
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', margin: '0.1em' }}>
                     Letter Colors:
-                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black'}}>{currentGuess[0]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black'}}>{currentGuess[1]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black'}}>{currentGuess[2]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black'}}>{currentGuess[3]}</button>
-                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black'}}>{currentGuess[4]}</button>
+                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black', height: 30, width: 30 }}>{currentGuess[0]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black', height: 30, width: 30 }}>{currentGuess[1]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black', height: 30, width: 30 }}>{currentGuess[2]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black', height: 30, width: 30 }}>{currentGuess[3]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black', height: 30, width: 30 }}>{currentGuess[4]?.toUpperCase()}</button>
+                    </div>
                     <br />
                     {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
                     <br />
@@ -510,7 +512,7 @@ const Home = () => {
                     <ul>
                         {displayWordList}
                     </ul>
-                    <p style={{marginTop: '20em'}}>Page Visitor Count: {currentPageCount}</p>
+                    <PageVisitCounter currentPageCount={currentPageCount} />
                 </form>
             </div>
         )
