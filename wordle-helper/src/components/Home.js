@@ -303,6 +303,7 @@ const Home = () => {
             return <li style={{ listStyleType: 'none' }}>{props.value?.toUpperCase()}</li>;
         }
 
+        
         const removeWordsWith = (list, letter) => {
             /**
              * Remove words from list that have letter.  This function is 
@@ -318,6 +319,7 @@ const Home = () => {
 
             return list.filter((word) => !word.includes(letter));
         };
+
 
         const retainWordsWithLetterButNotAt = (list, letter, index) => {
             /**
@@ -337,6 +339,7 @@ const Home = () => {
             return list
         };
 
+
         const retainWordsWithLetterAt = (list, letter, index) => {
             /**
              * Keep words in list that have letter at index. This function
@@ -350,6 +353,7 @@ const Home = () => {
              */
             return list.filter((word) =>  word[index] === letter);
         };
+
 
         const removeWordsWithLetterAt = (list, letter, index)=> {
             /**
