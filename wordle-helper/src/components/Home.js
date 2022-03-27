@@ -3,6 +3,7 @@ import { allWords } from '../utils/wordBank';
 import {getCurrentPageCount, updateCurrentPageCount} from './AwsFunctions';
 import PageVisitCounter from './PageVisitCounter';
 import ReactGA from 'react-ga4';
+import '../styles/Home.css';
 
 const Home = () => {
     const [currentGuess, setCurrentGuess] = useState('');
@@ -13,6 +14,7 @@ const Home = () => {
     const [wordList, setWordList] = useState(allWords);
     const [displayWordList, setDisplayWordList] = useState([]);
     const [currentPageCount, setCurrentPageCount] = useState(null);
+    const hostname = window?.location?.hostname;
 
     const [valueForRemoveWordsWith, setValueForRemoveWordsWith] = useState('');
     const [valueForRetainWordsWith, setValueForRetainWordsWith] = useState('');
@@ -206,10 +208,12 @@ const Home = () => {
 
 
         const handleSubmit = (event) => {
-            ReactGA.event({
-                category: "user action",
-                action: "guess submitted",
-              });
+            if (hostname !== 'localhost') {// prevents sending events on local development
+                ReactGA.event({
+                    category: "user action",
+                    action: "guess submitted",
+                });
+            }
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             if(handleInputValidation(currentGuess) === true) {
                 console.log('handleSubmit', event);
@@ -227,10 +231,12 @@ const Home = () => {
         }
 
         const handleUndo = (event) => {
-            ReactGA.event({
-                category: "user action",
-                action: "undo guess",
-              });
+            if (hostname !== 'localhost') {// prevents sending events on local development
+                ReactGA.event({
+                    category: "user action",
+                    action: "undo guess",
+                });
+            }
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             console.log('handleUndo', event);
             if (previousGuesses.length > 0) {
@@ -252,10 +258,12 @@ const Home = () => {
         }
 
         const handleReset = (event) => {
-            ReactGA.event({
-                category: "user action",
-                action: "guess reset",
-              });              
+            if (hostname !== 'localhost') {// prevents sending events on local development
+                ReactGA.event({
+                    category: "user action",
+                    action: "guess reset",
+                });
+            }      
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             console.log('handleReset', event);
             if (previousGuesses.length > 0) {
@@ -469,15 +477,16 @@ const Home = () => {
         return (
             <div>
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2674335249736771" crossOrigin="anonymous"></script>
-                <p><b>Instructions:</b> After making a guess on wordle, type in your guess below.
-                    Then for each letter in your guess, tap the button below so that the colors 
-                    match what wordle shows. Click submit to see the remaining wordle words! 
+                <h2>Instructions</h2>
+                <p className='instructionText'>After making a guess on wordle, type in your guess below.
+                    Then for each letter in your guess, tap the button below so that the colors
+                    match what wordle shows. Click submit to see the remaining wordle words!
                 </p>
-
                 <form
                     id="main-form"
                     onSubmit={e => e.preventDefault()}
                 >
+                    <h3>Add Your Guess</h3>
                     <label>
                         Add Guess:
                         <input
@@ -492,22 +501,19 @@ const Home = () => {
                     <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
                     <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
                     <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
-                    <br></br>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', margin: '0.1em' }}>
                     Letter Colors:
-                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black', height: 30, width: 30 }}>{currentGuess[0]?.toUpperCase()}</button>
-                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black', height: 30, width: 30 }}>{currentGuess[1]?.toUpperCase()}</button>
-                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black', height: 30, width: 30 }}>{currentGuess[2]?.toUpperCase()}</button>
-                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black', height: 30, width: 30 }}>{currentGuess[3]?.toUpperCase()}</button>
-                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black', height: 30, width: 30 }}>{currentGuess[4]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black', height: 30, width: 30 }} aria-label={`Set first Letter Color, current color is ${buttonColors[b0]}`}>{currentGuess[0]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black', height: 30, width: 30 }} aria-label={`Set second Letter Color, current color is ${buttonColors[b1]}`}>{currentGuess[1]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black', height: 30, width: 30 }} aria-label={`Set third Letter Color, current color is ${buttonColors[b2]}`}>{currentGuess[2]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black', height: 30, width: 30 }} aria-label={`Set fourth Letter Color, current color is ${buttonColors[b3]}`}>{currentGuess[3]?.toUpperCase()}</button>
+                    <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black', height: 30, width: 30 }} aria-label={`Set fifth Letter Color, current color is ${buttonColors[b4]}`}>{currentGuess[4]?.toUpperCase()}</button>
                     </div>
-                    <br />
                     {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
-                    {/* <br />
+                    {/*
                     Current Guess: {currentGuess}
-                    <br />
                     Submitted Guess: {submittedGuess} */}
-                    <br />
+                    <h4>Results</h4>
                     Previous Guesses:
                     <ul>
                         {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
@@ -517,8 +523,8 @@ const Home = () => {
                     <ul>
                         {displayWordList}
                     </ul>
-                    <PageVisitCounter currentPageCount={currentPageCount} />
                 </form>
+                    <PageVisitCounter currentPageCount={currentPageCount} />
             </div>
         )
 

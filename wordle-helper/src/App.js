@@ -4,19 +4,26 @@ import DebugLogic from './components/debugLogic';
 import ReactGA from 'react-ga4';
 
 function App() {
-  ReactGA.initialize('G-73CQT0J8E5');
-  ReactGA.send('pageview');
+  if (window?.location?.hostname !== 'localhost') {// prevents sending events on local development
+    ReactGA.initialize('G-73CQT0J8E5');
+    ReactGA.send('pageview');
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
+      <header>
+        <h1>
           <code>Wordle-helper</code>
-        </p>
-        <Home />
+        </h1>
+        </header>
+        <main role={'main'}>
+          <Home />
+        </main>
+      {/* <footer role="contentinfo">
+       // TODO
+      </footer> */}
         {/* <DebugLogic /> */}
-      </header>
     </div>
-  );
+  )
 }
 
 export default App;
