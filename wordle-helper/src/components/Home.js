@@ -308,7 +308,7 @@ const Home = () => {
         }
 
         const Item = (props) => {
-            return <li style={{ listStyleType: 'none' }}>{props.value?.toUpperCase()}</li>;
+            return <li style={{ listStyleType: 'none', color: '#cccccc' }}>{props.value?.toUpperCase()}</li>;
         }
 
 
@@ -488,7 +488,7 @@ const Home = () => {
                 >
                     <h3>Add Your Guess</h3>
                     <label>
-                        Add Guess:
+                        Guess:
                         <input
                             type="text"
                             name="name"
@@ -498,31 +498,40 @@ const Home = () => {
                         />
                     </label>
                     {/* <input type="submit" value="Submit" /> */}
-                    <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
-                    <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
-                    <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', margin: '0.1em' }}>
-                    Letter Colors:
+                    Colors:
                     <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black', height: 30, width: 30 }} aria-label={`Set first Letter Color, current color is ${buttonColors[b0]}`}>{currentGuess[0]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black', height: 30, width: 30 }} aria-label={`Set second Letter Color, current color is ${buttonColors[b1]}`}>{currentGuess[1]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black', height: 30, width: 30 }} aria-label={`Set third Letter Color, current color is ${buttonColors[b2]}`}>{currentGuess[2]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black', height: 30, width: 30 }} aria-label={`Set fourth Letter Color, current color is ${buttonColors[b3]}`}>{currentGuess[3]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black', height: 30, width: 30 }} aria-label={`Set fifth Letter Color, current color is ${buttonColors[b4]}`}>{currentGuess[4]?.toUpperCase()}</button>
                     </div>
+                    <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
+                    <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
+                    <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
                     {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
                     {/*
                     Current Guess: {currentGuess}
                     Submitted Guess: {submittedGuess} */}
                     <h4>Results</h4>
-                    Previous Guesses:
-                    <ul>
-                        {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
-                    </ul>
-                    <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
-                    <p>Words Left:</p>
-                    <ul>
-                        {displayWordList}
-                    </ul>
+                    <div style={{ display: 'grid', gridTemplateColumns: '30% 60%', gridGap: '10%',
+                                  maxWidth: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
+                        <div>
+                            <p>Previous Guesses:</p>
+                            <ul style={{ istStyle: 'none', paddingLeft: 0 }}>
+                                {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
+                            </ul>
+                        </div>
+                        <div>
+                            <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
+                            <p>Words Left:</p>
+                            <ul style={{ istStyle: 'none', paddingLeft: 0 }}>
+                                {displayWordList}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    
                 </form>
                     <PageVisitCounter currentPageCount={currentPageCount} />
             </div>
