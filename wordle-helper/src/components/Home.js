@@ -514,18 +514,18 @@ const Home = () => {
                     Current Guess: {currentGuess}
                     Submitted Guess: {submittedGuess} */}
                     <h4>Results</h4>
-                    <div style={{ display: 'grid', gridTemplateColumns: '30% 60%', gridGap: '10%',
-                                  maxWidth: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '20% 60%', 
+                                  maxWidth: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
                         <div>
                             <p>Previous Guesses:</p>
-                            <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+                            <ul style={{ listStyle: 'none', paddingLeft: 0}}>
                                 {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
                             </ul>
                         </div>
                         <div>
                             <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
                             <p>Words Left:</p>
-                            <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+                            <ul style={{ listStyle: 'none', paddingLeft: 0, columns: '3 auto'  }}>
                                 {displayWordList}
                             </ul>
                         </div>
