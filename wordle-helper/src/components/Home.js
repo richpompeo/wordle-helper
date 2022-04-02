@@ -29,33 +29,33 @@ const Home = () => {
     const [b4, setB4] = useState(0);
 
     const updateLetterColorButtonB0 = (event) => {
-        console.log('updateLetterColorButton', (b0 + 1) % 3);
+        // console.log('updateLetterColorButton', (b0 + 1) % 3);
         event.preventDefault();
         setB0((b0 + 1) % 3);
     }
     const updateLetterColorButtonB1 = (event) => {
-        console.log('updateLetterColorButton', (b1 + 1) % 3);
+        // console.log('updateLetterColorButton', (b1 + 1) % 3);
         event.preventDefault();
         setB1((b1 + 1) % 3);
     }
     const updateLetterColorButtonB2 = (event) => {
-        console.log('updateLetterColorButton', (b2 + 1) % 3);
+        // console.log('updateLetterColorButton', (b2 + 1) % 3);
         event.preventDefault();
         setB2((b2 + 1) % 3);
     }
     const updateLetterColorButtonB3 = (event) => {
-        console.log('updateLetterColorButton', (b3 + 1) % 3);
+        // console.log('updateLetterColorButton', (b3 + 1) % 3);
         event.preventDefault();
         setB3((b3 + 1) % 3);
     }
     const updateLetterColorButtonB4 = (event) => {
-        console.log('updateLetterColorButton', (b4 + 1) % 3);
+        // console.log('updateLetterColorButton', (b4 + 1) % 3);
         event.preventDefault();
         setB4((b4 + 1) % 3);
     }
 
     const resetButtonsAndGuess = () => {
-        console.log('resetButtonsAndGuess');
+        // console.log('resetButtonsAndGuess');
         setB0(0);
         setB1(0);
         setB2(0);
@@ -68,8 +68,8 @@ const Home = () => {
     const bigBrainFunction = (word, letterColors) => {
         let data = packageData(word, letterColors);
         let wordListFiltered = [...wordList];
-        console.log('data', data)
-        console.log(Object.keys(data))
+        // console.log('data', data)
+        // console.log(Object.keys(data))
         // 0 = black
         // 1 = yellow
         // 2 = green
@@ -111,8 +111,8 @@ const Home = () => {
         const bigBrainFunction2 = (word, letterColors) => {
             let data = packageData(word, letterColors);
             let wordListFiltered = [...wordList];
-            console.log('data', data)
-            console.log(Object.keys(data))
+            // console.log('data', data)
+            // console.log(Object.keys(data))
             // 0 = black
             // 1 = yellow
             // 2 = green
@@ -183,23 +183,23 @@ const Home = () => {
             }
 
         const packageData = (word, letterColors) => {
-            console.log('word', word);
-            console.log('letterColors', letterColors);
-            console.log([...word])
+            // console.log('word', word);
+            // console.log('letterColors', letterColors);
+            // console.log([...word])
             const wordLetters = [...word.toLowerCase()];
             let final = {};
             for (let i = 0; i <= 4; i++) {
                 let letter = wordLetters[i];
                 let color = letterColors[i];
-                console.log('letter', letter)
-                console.log({ 'color': color, 'index': i })
+                // console.log('letter', letter)
+                // console.log({ 'color': color, 'index': i })
                 if (final.hasOwnProperty(letter)) {
                     final[letter] = [...final[letter], { 'color': color, 'index': i }]
                 } else {
                     final[letter] = [{ 'color': color, 'index': i }]
                 }
             }
-            console.log('final', final)
+            // console.log('final', final)
 
 
 
@@ -216,7 +216,7 @@ const Home = () => {
             }
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             if(handleInputValidation(currentGuess) === true) {
-                console.log('handleSubmit', event);
+                // console.log('handleSubmit', event);
                 let wordListSynchronous = []
                 setSubmittedGuess(currentGuess);
                 setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
@@ -238,7 +238,7 @@ const Home = () => {
                 });
             }
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
-            console.log('handleUndo', event);
+            // console.log('handleUndo', event);
             if (previousGuesses.length > 0) {
                 previousGuesses.pop()
                 previousDisplayWordLists.pop()
@@ -265,7 +265,7 @@ const Home = () => {
                 });
             }      
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
-            console.log('handleReset', event);
+            // console.log('handleReset', event);
             if (previousGuesses.length > 0) {
                 setPreviousGuesses([])
                 setPreviousDisplayWordLists([])
@@ -308,7 +308,7 @@ const Home = () => {
         }
 
         const Item = (props) => {
-            return <li style={{ listStyleType: 'none', color: '#cccccc' }}>{props.value?.toUpperCase()}</li>;
+            return <li style={{ listStyleType: 'none', color: '#dbdbdb' }}>{props.value?.toUpperCase()}</li>;
         }
 
 
@@ -395,14 +395,14 @@ const Home = () => {
 
         
         const keepWordsWithExactLetterCount = (list, letter, letterCount)=> {
-            console.log('letter, letterCount', letter, letterCount)
+            // console.log('letter, letterCount', letter, letterCount)
 
             return list.filter((word) =>  countLettersInWord(word, letter) === letterCount);
         };
 
 
         const keepWordsWithAtLeastLetterCount = (list, letter, letterCount)=> {
-            console.log('letter, letterCount', letter, letterCount)
+            // console.log('letter, letterCount', letter, letterCount)
 
             return list.filter((word) =>  countLettersInWord(word, letter) >= letterCount);
         };
@@ -518,14 +518,14 @@ const Home = () => {
                                   maxWidth: '80%', marginLeft: 'auto', marginRight: 'auto' }}>
                         <div>
                             <p>Previous Guesses:</p>
-                            <ul style={{ istStyle: 'none', paddingLeft: 0 }}>
+                            <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
                                 {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
                             </ul>
                         </div>
                         <div>
                             <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
                             <p>Words Left:</p>
-                            <ul style={{ istStyle: 'none', paddingLeft: 0 }}>
+                            <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
                                 {displayWordList}
                             </ul>
                         </div>
