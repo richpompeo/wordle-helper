@@ -29,33 +29,33 @@ const Home = () => {
     const [b4, setB4] = useState(0);
 
     const updateLetterColorButtonB0 = (event) => {
-        console.log('updateLetterColorButton', (b0 + 1) % 3);
+        // console.log('updateLetterColorButton', (b0 + 1) % 3);
         event.preventDefault();
         setB0((b0 + 1) % 3);
     }
     const updateLetterColorButtonB1 = (event) => {
-        console.log('updateLetterColorButton', (b1 + 1) % 3);
+        // console.log('updateLetterColorButton', (b1 + 1) % 3);
         event.preventDefault();
         setB1((b1 + 1) % 3);
     }
     const updateLetterColorButtonB2 = (event) => {
-        console.log('updateLetterColorButton', (b2 + 1) % 3);
+        // console.log('updateLetterColorButton', (b2 + 1) % 3);
         event.preventDefault();
         setB2((b2 + 1) % 3);
     }
     const updateLetterColorButtonB3 = (event) => {
-        console.log('updateLetterColorButton', (b3 + 1) % 3);
+        // console.log('updateLetterColorButton', (b3 + 1) % 3);
         event.preventDefault();
         setB3((b3 + 1) % 3);
     }
     const updateLetterColorButtonB4 = (event) => {
-        console.log('updateLetterColorButton', (b4 + 1) % 3);
+        // console.log('updateLetterColorButton', (b4 + 1) % 3);
         event.preventDefault();
         setB4((b4 + 1) % 3);
     }
 
     const resetButtonsAndGuess = () => {
-        console.log('resetButtonsAndGuess');
+        // console.log('resetButtonsAndGuess');
         setB0(0);
         setB1(0);
         setB2(0);
@@ -68,8 +68,8 @@ const Home = () => {
     const bigBrainFunction = (word, letterColors) => {
         let data = packageData(word, letterColors);
         let wordListFiltered = [...wordList];
-        console.log('data', data)
-        console.log(Object.keys(data))
+        // console.log('data', data)
+        // console.log(Object.keys(data))
         // 0 = black
         // 1 = yellow
         // 2 = green
@@ -111,8 +111,8 @@ const Home = () => {
         const bigBrainFunction2 = (word, letterColors) => {
             let data = packageData(word, letterColors);
             let wordListFiltered = [...wordList];
-            console.log('data', data)
-            console.log(Object.keys(data))
+            // console.log('data', data)
+            // console.log(Object.keys(data))
             // 0 = black
             // 1 = yellow
             // 2 = green
@@ -183,23 +183,23 @@ const Home = () => {
             }
 
         const packageData = (word, letterColors) => {
-            console.log('word', word);
-            console.log('letterColors', letterColors);
-            console.log([...word])
+            // console.log('word', word);
+            // console.log('letterColors', letterColors);
+            // console.log([...word])
             const wordLetters = [...word.toLowerCase()];
             let final = {};
             for (let i = 0; i <= 4; i++) {
                 let letter = wordLetters[i];
                 let color = letterColors[i];
-                console.log('letter', letter)
-                console.log({ 'color': color, 'index': i })
+                // console.log('letter', letter)
+                // console.log({ 'color': color, 'index': i })
                 if (final.hasOwnProperty(letter)) {
                     final[letter] = [...final[letter], { 'color': color, 'index': i }]
                 } else {
                     final[letter] = [{ 'color': color, 'index': i }]
                 }
             }
-            console.log('final', final)
+            // console.log('final', final)
 
 
 
@@ -216,7 +216,7 @@ const Home = () => {
             }
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
             if(handleInputValidation(currentGuess) === true) {
-                console.log('handleSubmit', event);
+                // console.log('handleSubmit', event);
                 let wordListSynchronous = []
                 setSubmittedGuess(currentGuess);
                 setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
@@ -238,7 +238,7 @@ const Home = () => {
                 });
             }
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
-            console.log('handleUndo', event);
+            // console.log('handleUndo', event);
             if (previousGuesses.length > 0) {
                 previousGuesses.pop()
                 previousDisplayWordLists.pop()
@@ -265,7 +265,7 @@ const Home = () => {
                 });
             }      
             tryUpdatingPageLoadCount() // count that user is on page today if not already counted
-            console.log('handleReset', event);
+            // console.log('handleReset', event);
             if (previousGuesses.length > 0) {
                 setPreviousGuesses([])
                 setPreviousDisplayWordLists([])
@@ -308,7 +308,7 @@ const Home = () => {
         }
 
         const Item = (props) => {
-            return <li style={{ listStyleType: 'none' }}>{props.value?.toUpperCase()}</li>;
+            return <li style={{ listStyleType: 'none', color: '#dbdbdb' }}>{props.value?.toUpperCase()}</li>;
         }
 
 
@@ -395,14 +395,14 @@ const Home = () => {
 
         
         const keepWordsWithExactLetterCount = (list, letter, letterCount)=> {
-            console.log('letter, letterCount', letter, letterCount)
+            // console.log('letter, letterCount', letter, letterCount)
 
             return list.filter((word) =>  countLettersInWord(word, letter) === letterCount);
         };
 
 
         const keepWordsWithAtLeastLetterCount = (list, letter, letterCount)=> {
-            console.log('letter, letterCount', letter, letterCount)
+            // console.log('letter, letterCount', letter, letterCount)
 
             return list.filter((word) =>  countLettersInWord(word, letter) >= letterCount);
         };
@@ -488,7 +488,7 @@ const Home = () => {
                 >
                     <h3>Add Your Guess</h3>
                     <label>
-                        Add Guess:
+                        Guess:
                         <input
                             type="text"
                             name="name"
@@ -498,31 +498,40 @@ const Home = () => {
                         />
                     </label>
                     {/* <input type="submit" value="Submit" /> */}
-                    <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
-                    <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
-                    <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', margin: '0.1em' }}>
-                    Letter Colors:
+                    Colors:
                     <button onClick={(e) => updateLetterColorButtonB0(e)} style={{backgroundColor: buttonColors[b0], color: 'black', height: 30, width: 30 }} aria-label={`Set first Letter Color, current color is ${buttonColors[b0]}`}>{currentGuess[0]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB1(e)} style={{backgroundColor: buttonColors[b1], color: 'black', height: 30, width: 30 }} aria-label={`Set second Letter Color, current color is ${buttonColors[b1]}`}>{currentGuess[1]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB2(e)} style={{backgroundColor: buttonColors[b2], color: 'black', height: 30, width: 30 }} aria-label={`Set third Letter Color, current color is ${buttonColors[b2]}`}>{currentGuess[2]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB3(e)} style={{backgroundColor: buttonColors[b3], color: 'black', height: 30, width: 30 }} aria-label={`Set fourth Letter Color, current color is ${buttonColors[b3]}`}>{currentGuess[3]?.toUpperCase()}</button>
                     <button onClick={(e) => updateLetterColorButtonB4(e)} style={{backgroundColor: buttonColors[b4], color: 'black', height: 30, width: 30 }} aria-label={`Set fifth Letter Color, current color is ${buttonColors[b4]}`}>{currentGuess[4]?.toUpperCase()}</button>
                     </div>
+                    <button onClick={(e) => handleSubmit(e)} style={{color: 'black'}}>submit guess</button>
+                    <button onClick={(e) => handleUndo(e)} style={{color: 'black'}}>undo guess</button>
+                    <button onClick={(e) => handleReset(e)} style={{color: 'black'}}>reset</button>
                     {/* Letter Color Inputs: {[b0, b1, b2, b3, b4]} */}
                     {/*
                     Current Guess: {currentGuess}
                     Submitted Guess: {submittedGuess} */}
                     <h4>Results</h4>
-                    Previous Guesses:
-                    <ul>
-                        {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
-                    </ul>
-                    <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
-                    <p>Words Left:</p>
-                    <ul>
-                        {displayWordList}
-                    </ul>
+                    <div style={{ display: 'grid', gridTemplateColumns: '20% 60%', 
+                                  maxWidth: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
+                        <div>
+                            <p>Previous Guesses:</p>
+                            <ul style={{ listStyle: 'none', paddingLeft: 0}}>
+                                {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
+                            </ul>
+                        </div>
+                        <div>
+                            <p>Number of 5 Letter Words Left: <b>{wordList.length}</b></p>
+                            <p>Words Left:</p>
+                            <ul style={{ listStyle: 'none', paddingLeft: 0, columns: '3 auto'  }}>
+                                {displayWordList}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    
                 </form>
                     <PageVisitCounter currentPageCount={currentPageCount} />
             </div>
