@@ -218,10 +218,11 @@ const Home = () => {
             if(handleInputValidation(currentGuess) === true) {
                 // console.log('handleSubmit', event);
                 let wordListSynchronous = []
-                setSubmittedGuess(currentGuess);
-                setPreviousGuesses([...previousGuesses, [currentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
+                let upperCurrentGuess = currentGuess?.toUpperCase()
+                setSubmittedGuess(upperCurrentGuess);
+                setPreviousGuesses([...previousGuesses, [upperCurrentGuess, [b0, b1, b2, b3, b4]]]) // <-- to be displayed as previous guesses
                 event.preventDefault();
-                wordListSynchronous = bigBrainFunction2(currentGuess, [b0, b1, b2, b3, b4]);
+                wordListSynchronous = bigBrainFunction2(upperCurrentGuess, [b0, b1, b2, b3, b4]);
                 setDisplayWordList(makeListItems(wordListSynchronous));
                 setPreviousDisplayWordLists([...previousDisplayWordLists,wordListSynchronous]) // <-- for future "undo" button
                 resetButtonsAndGuess();
@@ -309,6 +310,16 @@ const Home = () => {
 
         const Item = (props) => {
             return <li style={{ listStyleType: 'none', color: '#dbdbdb' }}>{props.value?.toUpperCase()}</li>;
+        }
+
+        const previousGuess = (props) => {
+            return  <li style={{ listStyleType: 'none', color: '#dbdbdb' }} key={props.value?.index}>
+                        <span style={{backgroundColor: buttonColors[props.value[1][0]], color: 'black'}} >{props.value[0].charAt(0)}</span>
+                        <span style={{backgroundColor: buttonColors[props.value[1][1]], color: 'black'}} >{props.value[0].charAt(1)}</span>
+                        <span style={{backgroundColor: buttonColors[props.value[1][2]], color: 'black'}} >{props.value[0].charAt(2)}</span>
+                        <span style={{backgroundColor: buttonColors[props.value[1][3]], color: 'black'}} >{props.value[0].charAt(3)}</span>
+                        <span style={{backgroundColor: buttonColors[props.value[1][4]], color: 'black'}} >{props.value[0].charAt(4)}</span>
+                    </li>;
         }
 
 
@@ -519,7 +530,15 @@ const Home = () => {
                         <div>
                             <p>Previous Guesses:</p>
                             <ul style={{ listStyle: 'none', paddingLeft: 0}}>
-                                {previousGuesses.map((word, index) => <Item value={word[0]} key={index}/>)}
+                                {previousGuesses.map((word, index) => (
+                                <li style={{ listStyleType: 'none', color: '#dbdbdb', maxWidth: 100, marginLeft: 'auto', marginRight: 'auto' }} key={index}>
+                                    <span style={{backgroundColor: buttonColors[word[1][0]], color: 'black', boxShadow: '1px 1px 2px 0px black', display: 'inline-block', width: '18%', boxSizing: 'border-box', fontSize: 12, margin: '1%'}} >{word[0].charAt(0)}</span>
+                                    <span style={{backgroundColor: buttonColors[word[1][1]], color: 'black', boxShadow: '1px 1px 2px 0px black', display: 'inline-block', width: '18%', boxSizing: 'border-box', fontSize: 12, margin: '1%'}} >{word[0].charAt(1)}</span>
+                                    <span style={{backgroundColor: buttonColors[word[1][2]], color: 'black', boxShadow: '1px 1px 2px 0px black', display: 'inline-block', width: '18%', boxSizing: 'border-box', fontSize: 12, margin: '1%'}} >{word[0].charAt(2)}</span>
+                                    <span style={{backgroundColor: buttonColors[word[1][3]], color: 'black', boxShadow: '1px 1px 2px 0px black', display: 'inline-block', width: '18%', boxSizing: 'border-box', fontSize: 12, margin: '1%'}} >{word[0].charAt(3)}</span>
+                                    <span style={{backgroundColor: buttonColors[word[1][4]], color: 'black', boxShadow: '1px 1px 2px 0px black', display: 'inline-block', width: '18%', boxSizing: 'border-box', fontSize: 12, margin: '1%'}} >{word[0].charAt(4)}</span>
+                                </li>
+                                ))}
                             </ul>
                         </div>
                         <div>
