@@ -528,7 +528,8 @@ const Home = () => {
                     <div style={{ display: 'grid', gridTemplateColumns: '20% 60%', 
                                   maxWidth: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
                         <div>
-                            <p>Previous Guesses:</p>
+                            <br></br>
+                            <p style={{fontSize: 15}}>Previous Guesses:</p>
                             <ul style={{ listStyle: 'none', paddingLeft: 0}}>
                                 {previousGuesses.map((word, index) => (
                                 <li style={{ listStyleType: 'none', color: '#dbdbdb', maxWidth: 100, marginLeft: 'auto', marginRight: 'auto' }} key={index}>
